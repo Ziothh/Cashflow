@@ -1,0 +1,6 @@
+import useStorage from "./useStorage";
+const useSessionStorage = (key, defaultValue) => {
+    return useStorage(key, defaultValue, window.sessionStorage);
+};
+export default useSessionStorage;
+//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoidXNlU2Vzc2lvblN0b3JhZ2UuanMiLCJzb3VyY2VSb290IjoiIiwic291cmNlcyI6WyIuLi8uLi9zcmMvc3RvcmFnZS91c2VTZXNzaW9uU3RvcmFnZS50cyJdLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiQUFBQSxPQUFPLFVBQVUsTUFBTSxjQUFjLENBQUE7QUFFckMsTUFBTSxpQkFBaUIsR0FBRyxDQUFJLEdBQVcsRUFBRSxZQUFlLEVBQUUsRUFBRTtJQUMxRCxPQUFPLFVBQVUsQ0FBSSxHQUFHLEVBQUUsWUFBWSxFQUFFLE1BQU0sQ0FBQyxjQUFjLENBQUMsQ0FBQTtBQUNsRSxDQUFDLENBQUE7QUFFRCxlQUFlLGlCQUFpQixDQUFBIn0=

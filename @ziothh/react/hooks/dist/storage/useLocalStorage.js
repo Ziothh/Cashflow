@@ -1,0 +1,6 @@
+import useStorage from "./useStorage";
+const useLocalStorage = (key, defaultValue) => {
+    return useStorage(key, defaultValue, window.localStorage);
+};
+export default useLocalStorage;
+//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoidXNlTG9jYWxTdG9yYWdlLmpzIiwic291cmNlUm9vdCI6IiIsInNvdXJjZXMiOlsiLi4vLi4vc3JjL3N0b3JhZ2UvdXNlTG9jYWxTdG9yYWdlLnRzIl0sIm5hbWVzIjpbXSwibWFwcGluZ3MiOiJBQUFBLE9BQU8sVUFBVSxNQUFNLGNBQWMsQ0FBQTtBQUVyQyxNQUFNLGVBQWUsR0FBRyxDQUFJLEdBQVcsRUFBRSxZQUFlLEVBQUUsRUFBRTtJQUN4RCxPQUFPLFVBQVUsQ0FBQyxHQUFHLEVBQUUsWUFBWSxFQUFFLE1BQU0sQ0FBQyxZQUFZLENBQUMsQ0FBQTtBQUM3RCxDQUFDLENBQUE7QUFFRCxlQUFlLGVBQWUsQ0FBQSJ9
