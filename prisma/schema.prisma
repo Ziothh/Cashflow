@@ -32,6 +32,9 @@ model Account {
     session_state            String?
     user                     User    @relation(fields: [userId], references: [id], onDelete: Cascade)
 
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+
     @@unique([provider, providerAccountId])
     @@map("accounts")
 }
@@ -42,6 +45,9 @@ model Session {
     userId       String
     expires      DateTime
     user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
 
     @@map("sessions")
 }
@@ -58,6 +64,10 @@ model User {
     wallets      Wallet[]
     transactions Transaction[]
     wishlists    Wishlist[]
+    WishlistItem WishlistItem[]
+
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
 
     @@map("users")
 }
@@ -67,8 +77,30 @@ model VerificationToken {
     token      String   @unique
     expires    DateTime
 
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+
     @@unique([identifier, token])
     @@map("verification_tokens")
+}
+
+model Category {
+    id   String @id @default(cuid())
+    name String
+
+    color   String
+    iconUrl String
+
+    // user   User   @relation(fields: [userId], references: [id])
+    // userId String
+
+    WishlistItem WishlistItem[]
+    Transaction  Transaction[]
+
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+
+    @@map("categories")
 }
 
 model Wallet {
@@ -92,6 +124,9 @@ model Transaction {
     id   String @id @default(cuid())
     name String
 
+    category   Category? @relation(fields: [categoryId], references: [id])
+    categoryId String?
+
     wallet   Wallet @relation(fields: [walletId], references: [id])
     walletId String
 
@@ -111,8 +146,29 @@ model Wishlist {
     user   User   @relation(fields: [userId], references: [id])
     userId String
 
+    WishlistItem WishlistItem[]
+
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
 
     @@map("wishlists")
+}
+
+model WishlistItem {
+    id   String @id @default(cuid())
+    name String
+
+    category   Category? @relation(fields: [categoryId], references: [id])
+    categoryId String?
+
+    wishlist   Wishlist @relation(fields: [wishlistId], references: [id])
+    wishlistId String
+
+    user   User   @relation(fields: [userId], references: [id])
+    userId String
+
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+
+    @@map("wishlist_items")
 }

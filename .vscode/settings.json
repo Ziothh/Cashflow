@@ -1,0 +1,10 @@
+{
+    "typescript.implementationsCodeLens.enabled": true,
+    "typescript.preferences.importModuleSpecifier": "shortest",
+    "typescript.preferences.quoteStyle": "double",
+    "typescript.referencesCodeLens.enabled": true,
+    "typescript.suggest.completeFunctionCalls": true,
+    "typescript.tsserver.maxTsServerMemory": 4096,
+    "reactSnippets.settings.typescriptPropsStatePrefix": "interface",
+    "js/ts.implicitProjectConfig.target": "ESNext"
+}

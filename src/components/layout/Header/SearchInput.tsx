@@ -1,6 +1,8 @@
-import { MagnifyingGlassIcon } from "@heroicons/react/24/outline"
-import CommandPalette, { useCommandPalette } from "@ziothh/tailwindui-next/common/components/modals/CommandPalette"
+import { BanknotesIcon, MagnifyingGlassIcon, WalletIcon } from "@heroicons/react/24/outline"
+import { Category, Transaction, Wallet, Wishlist, WishlistItem } from "@prisma/client"
+import CommandPalette, { createGroup, useCommandPalette } from "@ziothh/tailwindui-next/common/components/modals/CommandPalette"
 import classNames from "classnames"
+import { useQuery } from "../../../utils/trpc"
 
 interface Props {
     
@@ -9,6 +11,106 @@ interface Props {
 
 const SearchInput: React.FC<Props> = ({}) => {
     const commandPalette = useCommandPalette()
+
+    const wallets = useQuery(["wallet.getAll"])
+    const transactions = useQuery(["transaction.getAll"])
+    const wishlists = useQuery(["wishlist.getAll"])
+    const wishlistItems = useQuery(["wishlistItem.getAll"])
+    const categories = useQuery(["category.getAll"])
+
+    const groups = [
+        createGroup({
+            allResults: wallets.data! ?? [] as Wallet[],
+            filter: (p, s) => p.name.toLowerCase().includes(s),
+            label: "Wallets",
+            toCard: (r) => ({
+                id: r.id,
+                name: r.name,
+                // href: r.url,
+                icon: WalletIcon
+            }),
+            identifyer: "!",
+            isLoading: wallets.isLoading
+        }),
+        createGroup({
+            allResults: transactions.data! ?? [] as Transaction[],
+            filter: (t, s) => t.name.toLowerCase().includes(s),
+            label: "Transactions",
+            toCard: (t) => ({
+                id: t.id,
+                name: t.name,
+                // href: r.url,
+                icon: BanknotesIcon
+            }),
+            identifyer: "$",
+            isLoading: transactions.isLoading
+        }),
+        createGroup({
+            allResults: wishlists.data! ?? [] as Wishlist[],
+            filter: (t, s) => t.name.toLowerCase().includes(s),
+            label: "Wishlists",
+            toCard: (t) => ({
+                id: t.id,
+                name: t.name,
+                // href: r.url,
+                icon: BanknotesIcon
+            }),
+            identifyer: "**",
+            isLoading: wishlists.isLoading,
+        }),
+        createGroup({
+            allResults: wishlistItems.data! ?? [] as WishlistItem[],
+            filter: (t, s) => t.name.toLowerCase().includes(s),
+            label: "Wishlist items",
+            toCard: (t) => ({
+                id: t.id,
+                name: t.name,
+                // href: r.url,
+                icon: BanknotesIcon
+            }),
+            identifyer: "*",
+            isLoading: wishlistItems.isLoading,
+        }),
+        createGroup({
+            allResults: categories.data! ?? [] as Category[],
+            filter: (t, s) => t.name.toLowerCase().includes(s),
+            label: "Categories",
+            toCard: (t) => ({
+                id: t.id,
+                name: t.name,
+                // href: r.url,
+                icon: BanknotesIcon
+            }),
+            identifyer: "@",
+            isLoading: categories.isLoading,
+        }),
+        // // @ts-ignore
+        // createGroup({
+        //     allResults: projects,
+        //     filter: (p, s) => p.name.toLowerCase().includes(s),
+        //     label: "Projects",
+        //     toCard: (r) => ({
+        //         id: r.id,
+        //         name: r.name,
+        //         href: r.url,
+        //         icon: FolderIcon
+        //     }),
+        //     identifyer: "#",
+        // }),
+        // // @ts-ignore
+        // createGroup({
+        //     allResults: users,
+        //     label: "Users",
+        //     filter: (p, s) => p.name.toLowerCase().includes(s),
+        //     identifyer: ">",
+        //     toCard: (r) => ({
+        //         id: r.id,
+        //         name: r.name,
+        //         href: r.url,
+        //         icon: () => (<img src={r.imageUrl} alt="" className="h-6 w-6 flex-none rounded-full" />)
+        //     })
+        // }),
+    ] as unknown as ReturnType<typeof createGroup>[]
 
     return (
         <>
@@ -35,7 +137,7 @@ const SearchInput: React.FC<Props> = ({}) => {
                 </kbd>
             </div>
       </form>
-      <CommandPalette/>
+      <CommandPalette groups={groups}/>
       </>
     )
 }

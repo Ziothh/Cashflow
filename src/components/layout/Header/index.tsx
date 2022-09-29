@@ -30,7 +30,7 @@ const Header: React.FC<Props> = ({}) => {
         {/* Search bar */}
         <div className="flex flex-1 justify-between px-4 sm:px-6 lg:mx-auto lg:px-8">
           <div className="flex flex-1">
-            <SearchInput/>
+            {/* <SearchInput/> */}
           </div>
           <div className="ml-4 flex items-center md:ml-6">
             <button
