@@ -1,22 +1,31 @@
 import { BanknotesIcon, MagnifyingGlassIcon, WalletIcon } from "@heroicons/react/24/outline"
 import { Category, Transaction, Wallet, Wishlist, WishlistItem } from "@prisma/client"
-import CommandPalette, { createGroup, useCommandPalette } from "@ziothh/tailwindui-next/common/components/modals/CommandPalette"
+import CommandPalette, { createGroup, isOpenAtom, useCommandPalette } from "@ziothh/tailwindui-next/common/components/modals/CommandPalette"
 import classNames from "classnames"
+import { useAtom, useSetAtom } from "jotai"
+import { FC, Suspense } from "react"
 import { useQuery } from "../../../utils/trpc"
 
 interface Props {
     
 }
 
-
-const SearchInput: React.FC<Props> = ({}) => {
-    const commandPalette = useCommandPalette()
-
-    const wallets = useQuery(["wallet.getAll"])
-    const transactions = useQuery(["transaction.getAll"])
-    const wishlists = useQuery(["wishlist.getAll"])
-    const wishlistItems = useQuery(["wishlistItem.getAll"])
-    const categories = useQuery(["category.getAll"])
+const AppCommandPalette: FC = () => {
+    const wallets = useQuery(["wallet.getAll"], {
+        suspense: true,
+    })
+    const transactions = useQuery(["transaction.getAll"], {
+        suspense: true,
+    })
+    const wishlists = useQuery(["wishlist.getAll"], {
+        suspense: true,
+    })
+    const wishlistItems = useQuery(["wishlistItem.getAll"], {
+        suspense: true,
+    })
+    const categories = useQuery(["category.getAll"], {
+        suspense: true,
+    })
 
     const groups = [
         createGroup({
@@ -84,37 +93,18 @@ const SearchInput: React.FC<Props> = ({}) => {
             identifyer: "@",
             isLoading: categories.isLoading,
         }),
-        // // @ts-ignore
-        // createGroup({
-        //     allResults: projects,
-        //     filter: (p, s) => p.name.toLowerCase().includes(s),
-        //     label: "Projects",
-        //     toCard: (r) => ({
-        //         id: r.id,
-        //         name: r.name,
-        //         href: r.url,
-        //         icon: FolderIcon
-        //     }),
-        //     identifyer: "#",
-        // }),
-        // // @ts-ignore
-        // createGroup({
-        //     allResults: users,
-        //     label: "Users",
-        //     filter: (p, s) => p.name.toLowerCase().includes(s),
-        //     identifyer: ">",
-        //     toCard: (r) => ({
-        //         id: r.id,
-        //         name: r.name,
-        //         href: r.url,
-        //         icon: () => (<img src={r.imageUrl} alt="" className="h-6 w-6 flex-none rounded-full" />)
-        //     })
-        // }),
     ] as unknown as ReturnType<typeof createGroup>[]
+    
+    return <CommandPalette groups={groups}/>
+}
+
+
+const SearchInput: React.FC<Props> = ({}) => {
+    const setIsOpen = useSetAtom(isOpenAtom)
 
     return (
         <>
-        <form className="flex w-full md:ml-0 cursor-pointer" action="#" method="GET" onClick={() => commandPalette.setOpen(true)}>
+        <form className="flex w-full md:ml-0 cursor-pointer" action="#" method="GET" onClick={() => setIsOpen(true)}>
             <label htmlFor="search-field" className="sr-only">
             Search
             </label>
@@ -137,7 +127,9 @@ const SearchInput: React.FC<Props> = ({}) => {
                 </kbd>
             </div>
       </form>
-      <CommandPalette groups={groups}/>
+      <Suspense>
+        <AppCommandPalette/>
+      </Suspense>
       </>
     )
 }

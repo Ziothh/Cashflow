@@ -9,7 +9,7 @@ import { FC, Fragment, Key, SetStateAction, useDeferredValue, useMemo, useState 
 import { useQuery } from '../../../../../../utils/trpc'
 import useKeypress from '../../../../../../utils/useKeypress'
 
-const isOpenAtom = atom(true)
+export const isOpenAtom = atom(true)
 const groupsAtom = atom<ReturnType<typeof createGroup>[]>([])
 const rawQueryAtom = atom("",)
 const metaAtom = atom((get) => {
@@ -165,6 +165,9 @@ const ResultsList: FC<IResultsListProps> = ({
 }) => {
     const meta = useAtomValue(metaAtom)
     const groups = useAtomValue(filteredGroupsAtom)
+    const allGroups = useAtomValue(groupsAtom)
+
+    console.log(allGroups)
 
     if (meta.rawQuery === "") return null
 
@@ -173,8 +176,26 @@ const ResultsList: FC<IResultsListProps> = ({
             <LifebuoyIcon className="mx-auto h-6 w-6 text-gray-400" aria-hidden="true" />
             <p className="mt-4 font-semibold text-gray-900">Help with searching</p>
             <p className="mt-2 text-gray-500">
-                Use this tool to quickly search for users and projects across our entire platform. You can also
+                Use this tool to quickly search in our entire platform. You can also
                 use the search modifiers found in the footer below to limit the results to just users or projects.
+            </p>
+            <p className="mt-8">
+                <span className="font-medium">Shortcuts:</span> <br />
+                {allGroups.filter(g => g.identifyer !== undefined)
+                .map((g, i, arr) => (
+                    <span key={g.identifyer} className="flex items-center min-w-[200px] mx-auto justify-between mt-2 w-fit">
+                        {g.label}:
+                        <kbd
+                        className={classNames(
+                            'mx-1 flex h-5 w-5 items-center justify-center rounded border bg-white font-semibold sm:mx-2',
+                            // false ? 'border-indigo-600 text-indigo-600' : 'border-gray-400 text-gray-900'
+                            'border-gray-400 text-gray-900'
+                        )}
+                        >
+                            {g.identifyer}
+                        </kbd>
+                    </span>
+                ))}
             </p>
         </div>
     )
@@ -294,23 +315,6 @@ const CommandPaletteComponent: FC<{}> = ({
                             {/* Footer */}
                             <div className={classNames("flex flex-wrap items-center bg-gray-50 py-2.5 px-4 text-xs text-gray-700 rounded-xl", rawQuery.length === 0 && "rounded-t-none border-t border-gray-100")}>
                                 Type{' '}
-                                {/* {
-                                groups.filter(g => g.identifyer !== undefined)
-                                .map((g, i, arr) => (<>
-                                    <kbd
-                                    className={classNames(
-                                        'mx-1 flex h-5 w-5 items-center justify-center rounded border bg-white font-semibold sm:mx-2',
-                                        rawQuery.startsWith(g.identifyer!) ? 'border-indigo-600 text-indigo-600' : 'border-gray-400 text-gray-900'
-                                    )}
-                                    >
-                                    {g.identifyer}
-                                    </kbd>{' '}
-                                    <span className="">for {g.label.toLowerCase()}{i !== arr.length - 1 && ","}</span>
-                                </>))
-                                }
-                                
-                                
-                                <pre> and</pre> */}
                                 <kbd
                                 className={classNames(
                                     'mx-1 flex h-5 w-5 items-center justify-center rounded border bg-white font-semibold sm:mx-2',
@@ -319,7 +323,7 @@ const CommandPaletteComponent: FC<{}> = ({
                                 >
                                 ?
                                 </kbd>{' '}
-                                for help.
+                                for help and shortcuts.
                             </div>
                         </Combobox>
                     </Dialog.Panel>
