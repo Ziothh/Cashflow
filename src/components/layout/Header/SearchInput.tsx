@@ -1,4 +1,4 @@
-import { BanknotesIcon, MagnifyingGlassIcon, WalletIcon } from "@heroicons/react/24/outline"
+import { BanknotesIcon, MagnifyingGlassIcon, TagIcon, WalletIcon } from "@heroicons/react/24/outline"
 import { Category, Transaction, Wallet, Wishlist, WishlistItem } from "@prisma/client"
 import CommandPalette, { createGroup, isOpenAtom, useCommandPalette } from "@ziothh/tailwindui-next/common/components/modals/CommandPalette"
 import classNames from "classnames"
@@ -88,7 +88,7 @@ const AppCommandPalette: FC = () => {
                 id: t.id,
                 name: t.name,
                 // href: r.url,
-                icon: BanknotesIcon
+                icon: TagIcon
             }),
             identifyer: "@",
             isLoading: categories.isLoading,

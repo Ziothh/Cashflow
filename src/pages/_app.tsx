@@ -40,11 +40,14 @@ export default withTRPC<AppRouter>({
     return {
       links: [
         loggerLink({
-          enabled: (opts) =>
-            process.env.NODE_ENV === "development" ||
-            (opts.direction === "down" && opts.result instanceof Error),
+            enabled: (opts) =>
+                process.env.NODE_ENV === "development" ||
+                (opts.direction === "down" && opts.result instanceof Error),
         }),
-        httpBatchLink({ url }),
+        httpBatchLink({ 
+            url,
+            maxBatchSize: 5
+        }),
       ],
       url,
       transformer: superjson,

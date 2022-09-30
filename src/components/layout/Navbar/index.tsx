@@ -1,5 +1,5 @@
 import { Dialog, Transition } from "@headlessui/react"
-import { ClockIcon, CogIcon, CreditCardIcon, DocumentChartBarIcon, HomeIcon, QuestionMarkCircleIcon, ScaleIcon, ShieldCheckIcon, UserGroupIcon, XMarkIcon } from "@heroicons/react/24/outline"
+import { ClockIcon, CogIcon, CreditCardIcon, DocumentChartBarIcon, HomeIcon, QuestionMarkCircleIcon, ScaleIcon, ShieldCheckIcon, UserGroupIcon, WalletIcon, XMarkIcon } from "@heroicons/react/24/outline"
 import classNames from "classnames"
 import { atom, useAtom } from "jotai"
 import { Fragment } from "react"
@@ -12,8 +12,9 @@ const navigation: ComponentPropsFrom<typeof NavButton>[] = [
     { children: 'Home', href: AppRoutes.DASHBOARD, icon: HomeIcon, },
     { children: 'History', href: '#', icon: ClockIcon, },
     { children: 'Balances', href: '#', icon: ScaleIcon, },
-    { children: 'Cards', href: '#', icon: CreditCardIcon, },
-    { children: 'Recipients', href: '#', icon: UserGroupIcon, },
+    // { children: 'Cards', href: '#', icon: CreditCardIcon, },
+    { children: 'Wallets', href: '#', icon: WalletIcon, },
+    // { children: 'Recipients', href: '#', icon: UserGroupIcon, },
     { children: 'Reports', href: '#', icon: DocumentChartBarIcon, },
 ]
 const secondaryNavigation: ComponentPropsFrom<typeof NavButton>[] = [

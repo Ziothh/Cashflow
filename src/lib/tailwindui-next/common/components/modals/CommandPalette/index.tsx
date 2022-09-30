@@ -9,7 +9,7 @@ import { FC, Fragment, Key, SetStateAction, useDeferredValue, useMemo, useState 
 import { useQuery } from '../../../../../../utils/trpc'
 import useKeypress from '../../../../../../utils/useKeypress'
 
-export const isOpenAtom = atom(true)
+export const isOpenAtom = atom(false)
 const groupsAtom = atom<ReturnType<typeof createGroup>[]>([])
 const rawQueryAtom = atom("",)
 const metaAtom = atom((get) => {
@@ -167,8 +167,6 @@ const ResultsList: FC<IResultsListProps> = ({
     const groups = useAtomValue(filteredGroupsAtom)
     const allGroups = useAtomValue(groupsAtom)
 
-    console.log(allGroups)
-
     if (meta.rawQuery === "") return null
 
     if (meta.rawQuery.startsWith("?")) return (
@@ -207,8 +205,6 @@ const ResultsList: FC<IResultsListProps> = ({
             <p className="mt-2 text-gray-500">We couldn’t find anything with that term. Please try again.</p>
         </div>
     )
-
-    console.debug(groups)
 
     return (
         <Combobox.Options

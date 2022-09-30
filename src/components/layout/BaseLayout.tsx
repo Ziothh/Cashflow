@@ -6,7 +6,7 @@ import { AppRoutes } from "../../config/routes"
 import { ComponentPropsFrom } from "../../utils/types"
 import Header from "./Header"
 import Navbar from "./Navbar"
-import { ClockIcon, CogIcon, CreditCardIcon, DocumentChartBarIcon, HomeIcon, QuestionMarkCircleIcon, ScaleIcon, ShieldCheckIcon, UserGroupIcon, XMarkIcon } from "@heroicons/react/24/outline"
+import { BanknotesIcon, CakeIcon, ClockIcon, CogIcon, CreditCardIcon, DocumentChartBarIcon, HomeIcon, QuestionMarkCircleIcon, ScaleIcon, ShieldCheckIcon, UserGroupIcon, WalletIcon, XMarkIcon } from "@heroicons/react/24/outline"
 import NavButton from "./Navbar/NavButton"
 import NavWalletList from "./Navbar/NavWalletList"
 
@@ -14,8 +14,10 @@ const navigation: ComponentPropsFrom<typeof SidebarNav>["links"][number] = [
     { name: 'Home', href: AppRoutes.DASHBOARD, icon: HomeIcon, },
     { name: 'History', href: '#', icon: ClockIcon, },
     { name: 'Balances', href: '#', icon: ScaleIcon, },
-    { name: 'Cards', href: '#', icon: CreditCardIcon, },
+    { name: 'Transactions', href: AppRoutes.TRANSACTIONS(), icon: BanknotesIcon, },
+    { name: 'Wallets', href: '#', icon: WalletIcon, },
     { name: 'Recipients', href: '#', icon: UserGroupIcon, },
+    { name: 'Wishlists', href: '#', icon: CakeIcon, },
     { name: 'Reports', href: '#', icon: DocumentChartBarIcon, },
 ]
 const secondaryNavigation: ComponentPropsFrom<typeof SidebarNav>["links"][number] = [
@@ -39,10 +41,10 @@ const BaseLayout: React.FC<PropsWithChildren<Props>> = ({children}) => {
 
     return (
         <SidebarLayout navbar={
-        <SidebarNav 
+            <SidebarNav 
             logo={(
                 <div className="flex text-gray-100 font-extrabold text-xl items-center gap-4">
-                     <img
+                    <img
                     className="h-8 w-auto"
                     src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=500"
                     alt="Your Company"
@@ -56,7 +58,8 @@ const BaseLayout: React.FC<PropsWithChildren<Props>> = ({children}) => {
                 NavWalletList,
                 secondaryNavigation,
             ]} 
-        />}>
+            />
+        }>
             
             
             {/* Content */}
