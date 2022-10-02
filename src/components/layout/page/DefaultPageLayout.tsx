@@ -3,7 +3,7 @@ import { PropsWithChildren, ReactNode } from "react"
 interface Props {
     title: ReactNode
     headerText?: ReactNode
-    buttons: ReactNode
+    buttons?: ReactNode
 }
 
 
@@ -24,9 +24,11 @@ const DefaultPageLayout: React.FC<PropsWithChildren<Props>> = ({
                         </p>
                     )}
                 </div>
-                <div className="mt-4 sm:mt-0 sm:ml-16 sm:flex-none flex gap-2 flex-wrap">
-                    {buttons}
-                </div>
+                {buttons && (
+                    <div className="mt-4 sm:mt-0 sm:ml-16 sm:flex-none flex gap-2 flex-wrap">
+                        {buttons}
+                    </div>
+                )}
             </div>
             <div className="mt-8 flex flex-col">
                 {children}

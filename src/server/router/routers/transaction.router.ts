@@ -52,5 +52,35 @@ const transactionRouter = createProtectedRouter()
         })
     }
 })
+.query("getOne", {
+    input: z.object({
+        id: z.string()
+    }),
+    async resolve({input}) {
+        return prisma.transaction.findFirstOrThrow({
+            where: {
+                id: input.id,
+            }
+        })
+    }
+})
+.query("getOne.full", {
+    input: z.object({
+        id: z.string()
+    }),
+    async resolve({input}) {
+        return prisma.transaction.findFirstOrThrow({
+            where: {
+                id: input.id,
+            },
+            include: {
+                category: true,
+                queuedBy: true,
+                recipient: true,
+                wallet: true,
+            }
+        })
+    }
+})
 
 export default transactionRouter
