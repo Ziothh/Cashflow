@@ -18,6 +18,7 @@ datasource db {
 // Necessary for Next auth
 model Account {
     id                       String  @id @default(cuid())
+    user                     User    @relation(fields: [userId], references: [id], onDelete: Cascade)
     userId                   String
     type                     String
     provider                 String
@@ -30,7 +31,6 @@ model Account {
     scope                    String?
     id_token                 String? //@db.Text
     session_state            String?
-    user                     User    @relation(fields: [userId], references: [id], onDelete: Cascade)
 
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
@@ -52,19 +52,47 @@ model Session {
     @@map("sessions")
 }
 
+model BankAccount {
+    id String @id // account.getMetadata().id
+
+    // account.getDetails()
+    resourceId  String
+    iban        String
+    detailsMeta Json
+
+    // account.getMetadata()
+    institutionId String
+
+    requisitionId         String? @db.LongText // client.initSession({...}).id
+    refreshToken          String? @db.LongText //@db.Text @map("refresh_token")
+    refreshTokenExpiresIn Int?
+    accessToken           String? @db.LongText //@db.Text 
+    expiresAt             Int?
+
+    userId String @unique
+    user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+
+    @@map("bank_accounts")
+}
+
 model User {
-    id            String    @id @default(cuid())
+    id            String       @id @default(cuid())
     name          String?
-    email         String?   @unique
+    email         String?      @unique
     emailVerified DateTime?
     image         String?
     accounts      Account[]
     sessions      Session[]
+    BankAccount   BankAccount?
 
-    wallets      Wallet[]
-    transactions Transaction[]
-    wishlists    Wishlist[]
-    WishlistItem WishlistItem[]
+    wallets              Wallet[]
+    transactions         Transaction[]
+    wishlists            Wishlist[]
+    WishlistItem         WishlistItem[]
+    RecurringTransaction RecurringTransaction[]
 
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
@@ -84,6 +112,23 @@ model VerificationToken {
     @@map("verification_tokens")
 }
 
+model Recipient {
+    id    String  @id @default(cuid())
+    name  String?
+    iban  String?
+    role  String?
+    image String?
+
+    RecurringTransaction RecurringTransaction[]
+    Transaction Transaction[]
+
+    createdAt   DateTime      @default(now())
+    updatedAt   DateTime      @updatedAt
+
+    @@index(iban)
+    @@map("recipient")
+}
+
 model Category {
     id   String @id @default(cuid())
     name String
@@ -94,8 +139,9 @@ model Category {
     // user   User   @relation(fields: [userId], references: [id])
     // userId String
 
-    WishlistItem WishlistItem[]
-    Transaction  Transaction[]
+    WishlistItem         WishlistItem[]
+    Transaction          Transaction[]
+    RecurringTransaction RecurringTransaction[]
 
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
@@ -121,7 +167,8 @@ model Wallet {
     user   User   @relation(fields: [userId], references: [id])
     userId String
 
-    Transactions Transaction[]
+    Transactions         Transaction[]
+    RecurringTransaction RecurringTransaction[]
 
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
@@ -143,6 +190,35 @@ enum TransactionStatus {
     @@map("TransactionState")
 }
 
+model RecurringTransaction {
+    id   String @id @default(cuid())
+    name String
+
+    amount Float
+
+    latestOccurrence DateTime @default(now())
+    deltaMonths      Int      @default(12)
+
+    category   Category? @relation(fields: [categoryId], references: [id])
+    categoryId String?
+
+    wallet   Wallet @relation(fields: [walletId], references: [id])
+    walletId String
+
+    recipient   Recipient? @relation(fields: [recipientId], references: [id])
+    recipientId String?
+
+    user   User   @relation(fields: [userId], references: [id])
+    userId String
+
+    Transaction Transaction[]
+
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+
+    @@map("recurring_transactions")
+}
+
 model Transaction {
     id   String @id @default(cuid())
     name String
@@ -152,17 +228,29 @@ model Transaction {
     type   TransactionType   @default(PAYMENT)
     status TransactionStatus @default(SUCCESS)
 
+    date DateTime @default(now())
+
+    description String? @db.LongText
+    additionalInformation String? @db.LongText
+    referenceId String? // ID received from the nordigenClient
+
     category   Category? @relation(fields: [categoryId], references: [id])
     categoryId String?
 
     wallet   Wallet @relation(fields: [walletId], references: [id])
     walletId String
 
+    recipient Recipient? @relation(fields: [recipientId], references: [id])
+    recipientId String?
+
+    queuedBy   RecurringTransaction? @relation(fields: [queuedById], references: [id])
+    queuedById String?
+
     user   User   @relation(fields: [userId], references: [id])
     userId String
 
-    createdAt DateTime @default(now())
-    updatedAt DateTime @updatedAt
+    createdAt   DateTime @default(now())
+    updatedAt   DateTime @updatedAt
 
     @@map("transactions")
 }

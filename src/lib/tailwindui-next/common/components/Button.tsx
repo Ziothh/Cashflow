@@ -15,7 +15,7 @@ const SIZE_STYLES = {
 } as const
 
 const COLOR_STYLES = {
-    primary: "text-white bg-indigo-500 hover:bg-indigo-600",
+    primary: "text-white bg-indigo-600 hover:bg-indigo-700",
     neutral: "border-transparent bg-gray-600 text-white hover:bg-gray-700 text-white",
 } as const
 
@@ -29,6 +29,8 @@ type THTMLButtonProps = DetailedHTMLProps<ButtonHTMLAttributes<HTMLButtonElement
 interface TButtonProps {
     onClick?: THTMLButtonProps["onClick"]
     icon?: FC<{className?: string}>
+
+    href?: string
 }
 
 interface Props extends TButtonProps {
@@ -57,6 +59,7 @@ const Button: React.FC<PropsWithChildren<Props>> = ({
     size = "md",
     theme = "primary",
     subButtons,
+    href,
 }) => {
     const Wrapper: FC<PropsWithChildren<{}>> = subButtons 
     ? ({children}) => <div children={children}
@@ -64,30 +67,37 @@ const Button: React.FC<PropsWithChildren<Props>> = ({
     />
     : Fragment
 
+    const Tag = href ? "a" : "button"
+    const ButtonWrapper = href 
+    ? ({children}: PropsWithChildren) => <Link href={href}>{children}</Link>
+    : Fragment
+
     return (
         <Wrapper>
-            <button type={type}
-            onClick={onClick}
-            className={classNames(
-                `
-                inline-flex items-center 
-                rounded-md border border-transparent 
-                font-medium leading-4
-                shadow-sm
-                outline-none
-                space-x-1
-                `,
-                subButtons && "rounded-r-none",
-                SIZE_STYLES[size],
-                COLOR_STYLES[theme]
-            )}
-            >
-                {Icon && (
-                    <Icon className="-ml-1 mr-2 h-[1.25em] text-sm"/>
+            <ButtonWrapper>
+                <Tag type={type}
+                // @ts-ignore
+                onClick={onClick}
+                className={classNames(
+                    `
+                    inline-flex items-center 
+                    rounded-md border border-transparent 
+                    font-medium
+                    shadow-sm
+                    outline-none
+                    space-x-1
+                    `,
+                    subButtons && "rounded-r-none",
+                    SIZE_STYLES[size],
+                    COLOR_STYLES[theme]
                 )}
-                {children}
-            </button>
-
+                >
+                    {Icon && (
+                        <Icon className="-ml-1 mr-2 h-[1.25em] text-sm"/>
+                    )}
+                    {children}
+                </Tag>
+            </ButtonWrapper>
             {subButtons && (
                 <Dropdown className="rounded-l-none"
                 buttons={subButtons}

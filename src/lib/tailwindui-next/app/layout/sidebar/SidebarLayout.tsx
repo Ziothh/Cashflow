@@ -12,11 +12,11 @@ const SidebarLayout: FC<PropsWithChildren<PropsWithChildren<Props>>> = createLay
     children
 }) => {
   return (
-    <div className='min-h-screen bg-gray-100 flex'>
+    <div className='min-h-screen max-h-screen overflow-y-auto bg-gray-100 flex'>
         {Navbar}
 
 
-        <div className="flex flex-1 flex-col min-h-full">
+        <div className="flex flex-1 flex-col min-h-full max-h-screen overflow-y-auto">
             {children}
         </div>
     </div>

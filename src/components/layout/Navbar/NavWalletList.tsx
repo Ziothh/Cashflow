@@ -1,4 +1,5 @@
 import Link from "next/link"
+import { useGetAllWalletsQuery } from "../../../data/queries/wallets"
 import { trpc, useQuery } from "../../../utils/trpc"
 
 interface Props {
@@ -10,7 +11,7 @@ const NavWalletList: React.FC<Props> = ({}) => {
     const {
         data, 
         isLoading,
-    } = useQuery(["wallet.getAll"])
+    } = useGetAllWalletsQuery()
 
     return (
         <div className="">

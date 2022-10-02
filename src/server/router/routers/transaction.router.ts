@@ -6,10 +6,10 @@ const transactionRouter = createProtectedRouter()
 .query("getAll.paginated", {
     input: z.object({
         pagination: z.object({
-            limit: z.number(),
+            limit: z.number().optional(),
             page: z.number().optional(),
             count: z.boolean().optional()
-        })
+        }),
         // userId: z.string()
     })
     .optional(),
@@ -20,8 +20,11 @@ const transactionRouter = createProtectedRouter()
                     userId: ctx.session.user.id,
                 }, 
                 take: input?.pagination?.limit,
+                orderBy: {
+                    date: "desc",
+                },
                 // cursor: {},
-                skip: input?.pagination?.page ? (input.pagination.page * input.pagination.limit!) : undefined,
+                skip: (input?.pagination?.limit && input?.pagination?.page)? (input.pagination.page * input.pagination.limit!) : undefined,
             }),
             prisma.transaction.count({
                 where: {
