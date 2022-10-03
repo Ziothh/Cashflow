@@ -18,7 +18,7 @@ const Header: React.FC<Props> = ({}) => {
     const user = session!.user!
 
     return (
-        <div className="flex h-16 flex-shrink-0 border-b border-gray-200 bg-white lg:border-none">
+        <div className="flex h-16 flex-shrink-0 border-b border-gray-200 z-[5] bg-white sticky top-0">
         <button
           type="button"
           className="border-r border-gray-200 px-4 text-gray-400 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-cyan-500 lg:hidden"

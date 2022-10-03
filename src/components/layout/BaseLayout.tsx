@@ -16,7 +16,7 @@ const navigation: ComponentPropsFrom<typeof SidebarNav>["links"][number] = [
     { name: 'Balances', href: '#', icon: ScaleIcon, },
     { name: 'Transactions', href: AppRoutes.TRANSACTIONS(), icon: BanknotesIcon, },
     { name: 'Wallets', href: '#', icon: WalletIcon, },
-    { name: 'Recipients', href: '#', icon: UserGroupIcon, },
+    { name: 'Recipients', href: AppRoutes.RECIPIENTS(), icon: UserGroupIcon, },
     { name: 'Wishlists', href: '#', icon: CakeIcon, },
     { name: 'Reports', href: '#', icon: DocumentChartBarIcon, },
 ]

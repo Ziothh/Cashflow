@@ -24,7 +24,7 @@ const transactionRouter = createProtectedRouter()
                     date: "desc",
                 },
                 // cursor: {},
-                skip: (input?.pagination?.limit && input?.pagination?.page)? (input.pagination.page * input.pagination.limit!) : undefined,
+                skip: (input?.pagination?.limit && input?.pagination?.page) ? ((input.pagination.page - 1) * input.pagination.limit!) : undefined,
             }),
             prisma.transaction.count({
                 where: {
@@ -49,6 +49,9 @@ const transactionRouter = createProtectedRouter()
             where: {
                 userId: ctx.session.user.id,
             }, 
+            orderBy: {
+                date: "desc",
+            },
         })
     }
 })

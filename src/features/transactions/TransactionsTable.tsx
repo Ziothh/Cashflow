@@ -5,6 +5,7 @@ import { useState } from "react"
 import { AppRoutes } from "../../config/routes"
 import { useGetAllWalletsQuery } from "../../data/queries/wallets"
 import { useQuery } from "../../utils/trpc"
+import { useAutoAnimate } from "@formkit/auto-animate/react"
 
 // const transactions = [
 //     {
@@ -46,14 +47,13 @@ const TransactionsTable: React.FC<Props> = ({
             // limit: 10,
             count: true,
         },
-        
-    }])
+    }], {keepPreviousData: true,})
 
     const {data: wallets, isLoading: walletsLoading} = useGetAllWalletsQuery()
 
-    const transactions = data?.[0] ?? []
-    const count = data?.[1]
 
+    const transactions = data?.[0] ?? []
+    const count = data?.[1] ?? 0
 
     const isLoading = transactionsLoading || walletsLoading
 
@@ -155,7 +155,7 @@ const TransactionsTable: React.FC<Props> = ({
                         </tr>
                     </thead>
                     <tbody className="divide-y divide-gray-200 bg-white">
-                        {isLoading 
+                        {!data 
                         ? (
                             null
                         ) : transactions.map((transaction) => (
@@ -205,7 +205,7 @@ const TransactionsTable: React.FC<Props> = ({
                                     </span>
                                 </td>
                                 <td className="whitespace-nowrap px-6 py-4 text-right text-sm text-gray-500">
-                                    <time dateTime={transaction.createdAt.toLocaleDateString()}>{transaction.createdAt.toLocaleDateString()}</time>
+                                    <time dateTime={(transaction.date ?? transaction.createdAt).toLocaleDateString()}>{(transaction.date ?? transaction.createdAt).toLocaleDateString()}</time>
                                 </td>
                             </tr>
                         ))}
@@ -216,26 +216,30 @@ const TransactionsTable: React.FC<Props> = ({
                     className="flex items-center justify-between border-t border-gray-200 bg-white px-4 py-3 sm:px-6"
                     aria-label="Pagination"
                     >
-                    <div className="hidden sm:block">
-                        <p className="text-sm text-gray-700">
-                        Showing {limit && (<><span className="font-medium">{limit * page}</span> to <span className="font-medium">{transactions.length}</span> of{' '}</>)}
-                        <span className="font-medium">{count}</span> results
-                        </p>
-                    </div>
-                    <div className="flex flex-1 justify-between sm:justify-end">
-                        <a
-                        href="#"
-                        className="relative inline-flex items-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50"
-                        >
-                            Previous
-                        </a>
-                        <a
-                        href="#"
-                        className="relative ml-3 inline-flex items-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50"
-                        >
-                            Next
-                        </a>
-                    </div>
+                        <div className="hidden sm:block">
+                            <p className="text-sm text-gray-700">
+                            Showing {limit ? (<><span className="font-medium">{(limit * (page - 1)) + 1}</span> to <span className="font-medium">{Math.min(limit * page, count!)}</span> of{' '}</>) : <span>all </span>}
+                            <span className="font-medium">{count}</span> results
+                            </p>
+                        </div>
+                        {limit && (
+                            <div className="flex flex-1 justify-between sm:justify-end">
+                                <button
+                                disabled={page <= 1}
+                                onClick={() => setPage(prev => prev - 1)}
+                                className="relative inline-flex items-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 disabled:opacity-20 disabled:cursor-not-allowed transition-opacity"
+                                >
+                                    Previous
+                                </button>
+                                <button
+                                disabled={count === undefined || (limit * page) >= count}
+                                onClick={() => setPage(prev => prev + 1)}
+                                className="relative ml-3 inline-flex items-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 disabled:opacity-20 disabled:cursor-not-allowed transition-opacity"
+                                >
+                                    Next
+                                </button>
+                            </div>
+                        )}
                     </nav>
                 </div>
                 </div>

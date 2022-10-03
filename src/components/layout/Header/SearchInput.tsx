@@ -4,6 +4,7 @@ import CommandPalette, { createGroup, isOpenAtom, useCommandPalette } from "@zio
 import classNames from "classnames"
 import { useAtom, useSetAtom } from "jotai"
 import { FC, Suspense } from "react"
+import { AppRoutes } from "../../../config/routes"
 import { useQuery } from "../../../utils/trpc"
 
 interface Props {
@@ -36,6 +37,7 @@ const AppCommandPalette: FC = () => {
                 id: r.id,
                 name: r.name,
                 // href: r.url,
+                href: AppRoutes.WALLETS(r.id),
                 icon: WalletIcon
             }),
             identifyer: "!",
@@ -49,6 +51,7 @@ const AppCommandPalette: FC = () => {
                 id: t.id,
                 name: t.name,
                 // href: r.url,
+                href: AppRoutes.TRANSACTIONS(t.id),
                 icon: BanknotesIcon
             }),
             identifyer: "$",
@@ -58,10 +61,11 @@ const AppCommandPalette: FC = () => {
             allResults: wishlists.data! ?? [] as Wishlist[],
             filter: (t, s) => t.name.toLowerCase().includes(s),
             label: "Wishlists",
-            toCard: (t) => ({
-                id: t.id,
-                name: t.name,
+            toCard: (w) => ({
+                id: w.id,
+                name: w.name,
                 // href: r.url,
+                href: AppRoutes.WISHLISTS(w.id),
                 icon: BanknotesIcon
             }),
             identifyer: "**",
@@ -71,10 +75,11 @@ const AppCommandPalette: FC = () => {
             allResults: wishlistItems.data! ?? [] as WishlistItem[],
             filter: (t, s) => t.name.toLowerCase().includes(s),
             label: "Wishlist items",
-            toCard: (t) => ({
-                id: t.id,
-                name: t.name,
+            toCard: (wi) => ({
+                id: wi.id,
+                name: wi.name,
                 // href: r.url,
+                href: AppRoutes.WISHLIST_ITEMS(wi.id),
                 icon: BanknotesIcon
             }),
             identifyer: "*",
@@ -82,12 +87,13 @@ const AppCommandPalette: FC = () => {
         }),
         createGroup({
             allResults: categories.data! ?? [] as Category[],
-            filter: (t, s) => t.name.toLowerCase().includes(s),
+            filter: (c, s) => c.name.toLowerCase().includes(s),
             label: "Categories",
             toCard: (t) => ({
                 id: t.id,
                 name: t.name,
                 // href: r.url,
+                href: AppRoutes.CATEGORIES(c.id),
                 icon: TagIcon
             }),
             identifyer: "@",
@@ -104,7 +110,7 @@ const SearchInput: React.FC<Props> = ({}) => {
 
     return (
         <>
-        <form className="flex w-full md:ml-0 cursor-pointer" action="#" method="GET" onClick={() => setIsOpen(true)}>
+        <div className="flex w-full md:ml-0 cursor-pointer" onClick={() => setIsOpen(true)}>
             <label htmlFor="search-field" className="sr-only">
             Search
             </label>
@@ -126,7 +132,7 @@ const SearchInput: React.FC<Props> = ({}) => {
                     Cmd + K
                 </kbd>
             </div>
-      </form>
+        </div>
       <Suspense>
         <AppCommandPalette/>
       </Suspense>
