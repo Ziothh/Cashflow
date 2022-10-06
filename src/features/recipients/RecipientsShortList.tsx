@@ -27,7 +27,7 @@ const people = [
   ]
   
 interface Props {
-    className: string
+    className?: string
 }
 
 

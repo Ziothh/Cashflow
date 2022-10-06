@@ -1,4 +1,5 @@
-import FormGroup from "@ziothh/tailwindui-next/app/form/FormGroup"
+import InputWithLabel from "@ziothh/tailwindui-next/app/form/elements/withLabel/Input.withLabel"
+import FormGroup from "@ziothh/tailwindui-next/app/form/wrappers/FormGroup"
 import { useRouter } from "next/router"
 import DefaultPageLayout from "../../components/layout/page/DefaultPageLayout"
 import { useGetAllWalletsQuery } from "../../data/queries/wallets"
@@ -25,28 +26,15 @@ const Page: React.FC<Props> = ({}) => {
                 {JSON.stringify(transaction, null, 4)}
             </pre> */}
             <FormGroup title="General">
-                <div className="grid grid-cols-3 gap-6">
-                    <div className="col-span-3 sm:col-span-2">
-                        <label
-                            htmlFor="company-website"
-                            className="block text-sm font-medium text-gray-700"
-                        >
-                            Website
-                        </label>
-                        <div className="mt-1 flex rounded-md shadow-sm">
-                            <span className="inline-flex items-center rounded-l-md border border-r-0 border-gray-300 bg-gray-50 px-3 text-sm text-gray-500">
-                                http://
-                            </span>
-                            <input
-                                type="text"
-                                name="company-website"
-                                id="company-website"
-                                className="block w-full flex-1 rounded-none rounded-r-md border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
-                                placeholder="www.example.com"
-                            />
-                        </div>
-                    </div>
-                </div>
+                <InputWithLabel
+                label="Website"
+                prefix={"https://"}
+                type="text"
+                name="company-website"
+                id="company-website"
+                placeholder="www.example.com"
+                tip="Write a few sentences about yourself."
+                />
 
                 <div>
                     <label

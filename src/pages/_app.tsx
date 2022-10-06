@@ -1,6 +1,7 @@
 // src/pages/_app.tsx
 import { httpBatchLink } from "@trpc/client/links/httpBatchLink";
 import { loggerLink } from "@trpc/client/links/loggerLink";
+import {ReactQueryDevtoolsPanel, ReactQueryDevtools} from "react-query/devtools"
 import { withTRPC } from "@trpc/next";
 import { SessionProvider } from "next-auth/react";
 import superjson from "superjson";
@@ -9,18 +10,28 @@ import type { AppRouter } from "../server/router";
 import type { Session } from "next-auth";
 import "../styles/globals.css";
 import BaseLayout from "../components/layout/BaseLayout";
+import { useState } from "react";
+import useKeypress from "../utils/useKeypress";
 
 const MyApp: AppType<{ session: Session | null }> = ({
   Component,
   pageProps: { session, ...pageProps },
 }) => {
-  return (
-    <SessionProvider session={session}>
-      <BaseLayout>
-        <Component {...pageProps} />
-      </BaseLayout>
-    </SessionProvider>
-  );
+    const [isDevtoolsOpen, setIsDevtoolsOpen] = useState(false)
+
+    useKeypress({
+        meta: {
+            "d": () => setIsDevtoolsOpen(prev => !prev)
+        }
+    })
+
+    return (
+        <SessionProvider session={session}>
+            <BaseLayout>
+                <Component {...pageProps} />
+            </BaseLayout>
+        </SessionProvider>
+    );
 };
 
 const getBaseUrl = () => {
@@ -39,11 +50,11 @@ export default withTRPC<AppRouter>({
 
     return {
       links: [
-        loggerLink({
-            enabled: (opts) =>
-                process.env.NODE_ENV === "development" ||
-                (opts.direction === "down" && opts.result instanceof Error),
-        }),
+        // loggerLink({
+        //     enabled: (opts) =>
+        //         process.env.NODE_ENV === "development" ||
+        //         (opts.direction === "down" && opts.result instanceof Error),
+        // }),
         httpBatchLink({ 
             url,
             maxBatchSize: 5

@@ -1,12 +1,9 @@
 import { Combobox, Dialog, Transition } from '@headlessui/react'
 import { MagnifyingGlassIcon } from '@heroicons/react/20/solid'
-import { ExclamationTriangleIcon, FolderIcon, LifebuoyIcon, WalletIcon } from '@heroicons/react/24/outline'
-import { Wallet } from '@prisma/client'
-import { GetProps } from '@ziothh/tailwindui-next/common/utils/typescript'
+import { ExclamationTriangleIcon, LifebuoyIcon } from '@heroicons/react/24/outline'
 import classNames from 'classnames'
-import { atom, Provider, useAtom, useAtomValue,  } from "jotai"
-import { FC, Fragment, Key, SetStateAction, useDeferredValue, useMemo, useState } from 'react'
-import { useQuery } from '../../../../../../utils/trpc'
+import { atom, Provider, useAtom, useAtomValue } from "jotai"
+import { FC, Fragment, Key, SetStateAction } from 'react'
 import useKeypress from '../../../../../../utils/useKeypress'
 
 export const isOpenAtom = atom(false)

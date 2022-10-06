@@ -85,5 +85,57 @@ const transactionRouter = createProtectedRouter()
         })
     }
 })
+.query("getSpentReport.minimal", {
+    async resolve ({ctx}) {
+        const dateOffset = new Date(Date.now())
+
+        const currentMonth = dateOffset.getMonth()
+        const currentYear = dateOffset.getFullYear()
+
+        const offsetMonth = currentMonth - 2
+        const offsetYear = offsetMonth < 1
+        ? currentYear - 1
+        : currentYear
+
+        dateOffset.setFullYear(
+            offsetYear,
+            offsetMonth === 0
+            ? 12
+            : offsetMonth === -1
+                ? 11
+                : offsetMonth
+        )
+
+
+        const transactions = await ctx.prisma.transaction.findMany({
+            where: {
+                userId: ctx.session.user.id,
+                date: {
+                    gt: dateOffset,
+                }
+            }
+        })
+
+        const filtered =  transactions.reduce((acc, t) => {
+            const isThisMonth = t.date.getFullYear() === currentYear && t.date.getMonth() === currentMonth
+
+            return isThisMonth
+            ? {
+                ...acc,
+                thisMonth: acc.thisMonth + t.amount,
+            } : {
+                ...acc,
+                previousMonth: acc.previousMonth + t.amount,
+            }
+        }, {thisMonth: 0, previousMonth: 0})
+
+        
+        return {
+            ...filtered,
+            /** `(thisMonth / previousMonth) * 100`% */
+            deltaPercentage: ((filtered.thisMonth / filtered.previousMonth) * 100)
+        }
+    }
+})
 
 export default transactionRouter
