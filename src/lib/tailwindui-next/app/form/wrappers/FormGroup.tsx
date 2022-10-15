@@ -1,36 +1,48 @@
-import { PropsWithChildren, ReactNode } from "react"
+import { Form, Formik, FormikConfig, FormikProps, FormikValues } from "formik"
+import { FC, Fragment, PropsWithChildren, ReactNode } from "react"
 
-interface Props {
+interface Props<Readonly extends boolean,> {
     title: ReactNode
     description?: ReactNode
+    readonly?: Readonly
 
 }
 
 
-const FormGroup: React.FC<PropsWithChildren<Props>> = ({
+const FormGroup = <Readonly extends boolean = false, Values extends FormikValues = FormikValues, >({
     title,
     children,
     description,
-}) => {
+    // @ts-ignore
+    readonly = false,
+    ...formikProps
+}: PropsWithChildren<Props<Readonly>> & (Readonly extends false ? Omit<FormikConfig<Values>, "children"> : {initialValues: Values})): JSX.Element => {
+    const Wrapper: FC<PropsWithChildren> = readonly === false 
+    // @ts-ignore
+    ? ({children}) => <Formik {...formikProps}><Form>{children}</Form></Formik>
+    : Fragment
+
     return (
-        <div>
-            <div className="md:grid md:grid-cols-3 md:gap-6">
-                <div className="md:col-span-1">
-                    <div className="px-4 sm:px-0">
-                        <h2 className="text-lg font-medium leading-6 text-gray-900">{title}</h2>
-                        {description && (
-                            <p className="mt-1 text-sm text-gray-600">
-                                {description}
-                            </p>
-                        )}
-                    </div>
+        <div className="md:grid md:grid-cols-3 md:gap-6">
+            <div className="md:col-span-1 py-6">
+                <div className="px-4 sm:px-0">
+                    <h2 className="text-lg font-medium leading-6 text-gray-900">
+                        {title}
+                    </h2>
+                    {description && (
+                        <p className="mt-1 text-sm text-gray-600">
+                            {description}
+                        </p>
+                    )}
                 </div>
-                <div className="mt-5 md:col-span-2 md:mt-0">
-                    <form action="#" method="POST">
-                        <div className="shadow sm:overflow-hidden sm:rounded-md">
-                            <div className="space-y-6 bg-white px-4 py-5 sm:p-6">
-                                {children}
-                            </div>
+            </div>
+            <div className="mt-5 md:col-span-2 md:mt-0">
+                <Wrapper>
+                    <div className="shadow sm:overflow-hidden sm:rounded-md">
+                        <div className="space-y-6 bg-white px-4 py-5 sm:p-6">
+                            {children}
+                        </div>
+                        {readonly !== true && (
                             <div className="bg-gray-50 px-4 py-3 text-right sm:px-6">
                                 <button
                                     type="submit"
@@ -39,9 +51,9 @@ const FormGroup: React.FC<PropsWithChildren<Props>> = ({
                                     Save
                                 </button>
                             </div>
-                        </div>
-                    </form>
-                </div>
+                        )}
+                    </div>
+                </Wrapper>
             </div>
         </div>
     )

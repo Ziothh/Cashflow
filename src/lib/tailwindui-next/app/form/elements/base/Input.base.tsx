@@ -1,4 +1,5 @@
-import { ChangeEvent, DetailedHTMLProps, FC, HTMLInputTypeAttribute, InputHTMLAttributes } from "react"
+import classNames from "classnames";
+import { DetailedHTMLProps, FC, InputHTMLAttributes } from "react";
 
 type TInputProps = DetailedHTMLProps<InputHTMLAttributes<HTMLInputElement>, HTMLInputElement>
 
@@ -40,12 +41,10 @@ const BaseInput: React.FC<IBaseInputProps> = ({
     ...props
 }) => {
     return (
-        <label htmlFor={props.id} className="mt-1 flex rounded-md shadow-sm border 
-        border-gray-300 
-        bg-gray-50 
-        focus-within:border-indigo-500 focus-within:ring-indigo-500 focus-within:ring-1
-        
-        ">
+        <label htmlFor={props.id} className={classNames(
+            "mt-1 flex rounded-md shadow-sm border border-gray-300 bg-gray-50", 
+            !props.readOnly && "focus-within:border-indigo-500 focus-within:ring-indigo-500 focus-within:ring-1",
+        )}>
             {Icon && <span className="inline-flex items-center border-r !border-gray-200 px-2 py-1 text-sm text-gray-500 flex-shrink-0 first:rounded-l-md">
                 <Icon/>
             </span>}
@@ -53,7 +52,7 @@ const BaseInput: React.FC<IBaseInputProps> = ({
                 {prefix}
             </span>}
             <input
-            className="block w-full flex-1 rounded-none border-none focus:ring-0 sm:text-sm first:rounded-l-md last:rounded-r-md"
+            className={classNames("block w-full flex-1 rounded-none border-none focus:ring-0 sm:text-sm first:rounded-l-md last:rounded-r-md", props.readOnly && "bg-gray-50")}
             type={type}
             value={value !== undefined 
                 ? (prefix === undefined || typeof value !== "string" || !value.startsWith(prefix))

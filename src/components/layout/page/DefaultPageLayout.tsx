@@ -14,7 +14,7 @@ const DefaultPageLayout: React.FC<PropsWithChildren<Props>> = ({
     headerText,
 }) => {
     return (
-        <div className="px-4 sm:px-6 lg:px-8 py-10 max-w-full">
+        <div className="px-4 sm:px-6 lg:px-8 py-10 max-w-full overflow-x-hidden overflow-y-auto">
             <div className="sm:flex sm:items-center">
                 <div className="sm:flex-auto">
                     <h1 className="text-xl font-semibold text-gray-900">{title}</h1>

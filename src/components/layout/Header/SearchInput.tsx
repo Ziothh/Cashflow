@@ -6,6 +6,7 @@ import { useAtom, useSetAtom } from "jotai"
 import { FC, Suspense } from "react"
 import { AppRoutes } from "../../../config/routes"
 import { useQuery } from "../../../utils/trpc"
+import KeyboardShortcutDisplay from "../../ui/KeyboardShortcutDisplay"
 
 interface Props {
     
@@ -128,9 +129,10 @@ const SearchInput: React.FC<Props> = ({}) => {
                     placeholder="Search transactions, wallets, ..."
                     type="search"
                 />
-                <kbd className={'mx-1 flex w-fit text-sm p-1 px-2 h-fit items-center whitespace-nowrap justify-center rounded border bg-white font-semibold sm:mx-2 border-gray-400 text-gray-900 hover:bg-gray-50'}>
+                <KeyboardShortcutDisplay keyName="K" />
+                {/* <kbd className={'mx-1 flex w-fit text-sm p-1 px-2 h-fit items-center whitespace-nowrap justify-center rounded border bg-white font-semibold sm:mx-2 border-gray-400 text-gray-900 hover:bg-gray-50'}>
                     Cmd + K
-                </kbd>
+                </kbd> */}
             </div>
         </div>
       <Suspense>

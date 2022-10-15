@@ -2,7 +2,7 @@ import { reactNodeRender } from "@ziothh/tailwindui-next/common/utils/parsing"
 import { PropsWithChildren, ReactNode } from "react"
 
 export interface FormElementWrapperProps {
-    label: ReactNode
+    label?: ReactNode
     id?: string
     tip?: ReactNode
 }
@@ -18,14 +18,16 @@ const FormElementWrapper: React.FC<PropsWithChildren<FormElementWrapperProps>> =
 }) => {
     return (
         <div className="w-full">
-            <label
+            {label && (
+                <label
                 htmlFor={id}
                 className="block text-sm font-medium text-gray-700"
-            >
-                {label}
-            </label>
+                >
+                    {label}
+                </label>
+            )}
             {children}
-            {reactNodeRender(tip, "mt-2 text-sm text-gray-500")}
+            {tip && reactNodeRender(tip, "mt-2 text-sm text-gray-500")}
         </div>
     )
 }

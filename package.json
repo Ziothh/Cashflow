@@ -22,6 +22,7 @@
     "@ziothh/react-helpers": "link:@ziothh/react/helpers",
     "@ziothh/react-hooks": "link:@ziothh/react/hooks",
     "classnames": "^2.3.2",
+    "formik": "^2.2.9",
     "jotai": "^1.8.4",
     "next": "12.3.1",
     "next-auth": "~4.10.3",
@@ -31,7 +32,8 @@
     "react-icons": "^4.4.0",
     "react-query": "3.39.2",
     "superjson": "^1.10.0",
-    "zod": "^3.18.0"
+    "zod": "^3.19.1",
+    "zod-formik-adapter": "^1.1.1"
   },
   "devDependencies": {
     "@tailwindcss/forms": "^0.5.3",
