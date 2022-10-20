@@ -14,6 +14,10 @@ import { SelectWithLabel } from "@ziothh/tailwindui-next/app/form/elements/withL
 import WalletColorDot from "../../features/wallets/WalletColorDot"
 import FormikEnumSelect from "@ziothh/tailwindui-next/app/form/elements/withFormik/EnumSelect.formik.tsx"
 import { TransactionStatus, TransactionType } from "@prisma/client"
+import TransactionTypeSelect from "../../components/form/presets/TransactionTypeSelect"
+import TransactionStatusSelect from "../../components/form/presets/TransactionStatusSelect"
+import WalletSelect from "../../components/form/presets/WalletSelect"
+import RecipientSelect from "../../components/form/presets/RecipientSelect"
 
 const schema = toFormikValidationSchema(transactionUpdateValidator())
 
@@ -24,7 +28,6 @@ interface Props {
 
 const Page: React.FC<Props> = ({}) => {
     const router = useRouter()
-    const {data: wallets} = useGetAllWalletsQuery(true)
 
     const {data: transaction} = useQuery(["transaction.getOne.full", {
         id: router.query.id as string,
@@ -32,7 +35,7 @@ const Page: React.FC<Props> = ({}) => {
         suspense: true,
     })
 
-    if (!wallets || !transaction) return null
+    if (!transaction) return null
 
     return (
         <DefaultPageLayout
@@ -63,31 +66,9 @@ const Page: React.FC<Props> = ({}) => {
                     readOnly
                     // tip="Write a few sentences about yourself."
                     />
-                    <FormikSelect
-                    label="Wallet"
-                    name="walletId"
-                    // value={wallets.find(w => w.id === transaction.walletId)!}
-                    options={wallets.map(w => w.id)}
-                    // onChange={nv => console.log(nv)}
-                    optionParser={id => {
-                        const wallet = wallets.find(w => w.id === id)!
-
-                        return {
-                            label: wallet.name,
-                            before: <WalletColorDot wallet={wallet} />
-                        }
-                    }}
-                    />
-                    <FormikEnumSelect
-                    label="Type"
-                    name="type"
-                    enum={TransactionType}
-                    /> 
-                    <FormikEnumSelect
-                    label="Status"
-                    name="status"
-                    enum={TransactionStatus}
-                    /> 
+                    <WalletSelect/>
+                    <TransactionTypeSelect />
+                    <TransactionStatusSelect />
                     <FormikTextarea
                     label="Description"
                     name="description"
@@ -115,6 +96,15 @@ const Page: React.FC<Props> = ({}) => {
                     }
                     readOnly
                     />
+                </FormGroup>
+                <FormGroup title="Recipient"
+                initialValues={transaction!}
+                validationSchema={schema}
+                onSubmit={(values, helpers,) => {
+                    console.debug(values);
+                }}
+                >
+                    <RecipientSelect/>
                 </FormGroup>
                 <div className="mt-10 sm:mt-0">
                     <div className="md:grid md:grid-cols-3 md:gap-6">

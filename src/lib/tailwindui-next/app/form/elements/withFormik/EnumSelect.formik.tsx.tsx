@@ -7,6 +7,8 @@ type Props<EnumType, Nullable extends boolean> = Omit<ISelectWithLabelProps<keyo
 }
 
 
+
+
 const FormikEnumSelect = <EnumType extends Object, Nullable extends boolean>({
     name,
     enum: enumType,
@@ -17,6 +19,7 @@ const FormikEnumSelect = <EnumType extends Object, Nullable extends boolean>({
     return (
         // @ts-ignore
         <SelectWithLabel 
+        // @ts-ignore
         value={field.value}
         options={Object.keys(enumType)}
         onChange={v => {
@@ -28,5 +31,17 @@ const FormikEnumSelect = <EnumType extends Object, Nullable extends boolean>({
     )
 }
 
+
+export const createFormikEnumSelect = <EnumType extends Object, Nullable extends boolean,>(
+    enumType: EnumType,
+    defaultValues: Omit<Props<EnumType, Nullable>, "enum"> 
+) => <Nullable2 extends boolean>(props: Partial<Omit<Props<EnumType, Nullable2>, "enum">>) => (
+    // @ts-ignore
+    <FormikEnumSelect
+    {...defaultValues}
+    {...props}
+    enum={enumType}
+    />
+)
 
 export default FormikEnumSelect

@@ -38,12 +38,12 @@ const FormGroup = <Readonly extends boolean = false, Values extends FormikValues
             </div>
             <div className="mt-5 md:col-span-2 md:mt-0">
                 <Wrapper>
-                    <div className="shadow sm:overflow-hidden sm:rounded-md">
-                        <div className="space-y-6 bg-white px-4 py-5 sm:p-6">
+                    <div className="shadow rounded-md">
+                        <div className={`space-y-6 bg-white px-4 py-5 sm:p-6 ${readonly ? "rounded-md" : "rounded-t-md"}`}>
                             {children}
                         </div>
                         {readonly !== true && (
-                            <div className="bg-gray-50 px-4 py-3 text-right sm:px-6">
+                            <div className="bg-gray-50 px-4 py-3 text-right rounded-b-md sm:px-6">
                                 <button
                                     type="submit"
                                     className="inline-flex justify-center rounded-md border border-transparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"

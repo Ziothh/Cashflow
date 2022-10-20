@@ -1,3 +1,5 @@
 import { useQuery } from "../../utils/trpc";
 
-export const useGetAllRecipientsQuery = () => useQuery(["recipient.getAll"])
+export const useGetAllRecipientsQuery = (suspense = false) => useQuery(["recipient.getAll"], {
+    suspense,
+})
