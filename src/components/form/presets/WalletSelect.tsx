@@ -18,7 +18,7 @@ const WalletSelect = createFormikSelect<Wallet["id"]>(() => {
             const wallet = wallets!.find(w => w.id === optionId)!
             return {
                 label: wallet.name,
-                before: undefined, // TODO: image (see tailwindui comboboxes)
+                before: <WalletColorDot wallet={wallet} />, // TODO: image (see tailwindui comboboxes)
                 after: undefined
             }
         },

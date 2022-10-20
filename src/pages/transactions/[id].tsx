@@ -33,6 +33,9 @@ const Page: React.FC<Props> = ({}) => {
         id: router.query.id as string,
     }], {
         suspense: true,
+        refetchOnMount: false,
+        refetchOnReconnect: false,
+        refetchOnWindowFocus: false, 
     })
 
     if (!transaction) return null

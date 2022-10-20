@@ -1,10 +1,11 @@
-import { Form, Formik, FormikConfig, FormikProps, FormikValues } from "formik"
+import { Form, Formik, FormikConfig, FormikProps, FormikSharedConfig, FormikValues } from "formik"
 import { FC, Fragment, PropsWithChildren, ReactNode } from "react"
 
 interface Props<Readonly extends boolean,> {
     title: ReactNode
     description?: ReactNode
     readonly?: Readonly
+    enableReinitialize?: boolean 
 
 }
 
@@ -15,11 +16,12 @@ const FormGroup = <Readonly extends boolean = false, Values extends FormikValues
     description,
     // @ts-ignore
     readonly = false,
+    enableReinitialize = false,
     ...formikProps
-}: PropsWithChildren<Props<Readonly>> & (Readonly extends false ? Omit<FormikConfig<Values>, "children"> : {initialValues: Values})): JSX.Element => {
+}: PropsWithChildren<Props<Readonly>> & (Readonly extends false ? (Omit<FormikConfig<Values>, "children"> & {enableReinitialize?: boolean}) : {initialValues: Values})): JSX.Element => {
     const Wrapper: FC<PropsWithChildren> = readonly === false 
     // @ts-ignore
-    ? ({children}) => <Formik {...formikProps}><Form>{children}</Form></Formik>
+    ? ({children}) => <Formik {...formikProps} enableReinitialize={enableReinitialize}><Form>{children}</Form></Formik>
     : Fragment
 
     return (
