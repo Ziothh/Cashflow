@@ -1,6 +1,6 @@
 import { ChangeEvent, ReactNode, useMemo, useState } from 'react'
 import { CheckIcon, ChevronUpDownIcon } from '@heroicons/react/20/solid'
-import { Combobox } from '@headlessui/react'
+import { Combobox as HeadlessCombobox } from '@headlessui/react'
 import classNames from "classnames"
 
 type Test<T> = T extends Object ? "this is an object" : never
@@ -46,7 +46,7 @@ export type ISelectWithLabelProps<T, Nullable extends boolean> = IBaseProps<T, N
 & (Nullable extends true ? {placeholder: ReactNode} : {})
 
 
-const Select = <T, Nullable extends boolean = false>(
+const Combobox = <T, Nullable extends boolean = false>(
     {
         label,
         value,
@@ -117,7 +117,7 @@ const Select = <T, Nullable extends boolean = false>(
 
   
     return (
-        <Combobox as="div" 
+        <HeadlessCombobox as="div" 
         // @ts-ignore
         value={value as T} 
         // @ts-ignore
@@ -125,17 +125,20 @@ const Select = <T, Nullable extends boolean = false>(
         // @ts-ignore
         nullable={nullable as boolean}
         >
-            <Combobox.Label className="block text-sm font-medium text-gray-700">{label}</Combobox.Label>
+            <HeadlessCombobox.Label className="block text-sm font-medium text-gray-700">{label}</HeadlessCombobox.Label>
             <div className="relative mt-1">
-                <Combobox.Button 
+                <HeadlessCombobox.Button 
                 className="w-full rounded-md border border-gray-300 bg-white py-2 px-3 flex items-center shadow-sm 
                 focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500
                 focus-within:border-indigo-500 focus-within:outline-none focus-within:ring-1 focus-within:ring-indigo-500
                 "
                 >
-                    <Combobox.Input
+                    <HeadlessCombobox.Input
                     className={"p-0 !border-none !focus:outline-none sm:text-sm w-full !ring-transparent !ring-0"}
-                        onChange={(event) => setQuery(event.target.value)}
+                        onChange={(event) => {
+                            console.log("change")
+                            setQuery(event.target.value)
+                        }}
                         displayValue={v => parsedOptions.find(
                             valueType === "string"
                             ? (o => o.value === v)
@@ -145,12 +148,12 @@ const Select = <T, Nullable extends boolean = false>(
                     <div className="flex items-center rounded-r-md px-2 -mr-3 focus:">
                         <ChevronUpDownIcon className="h-5 w-5 text-gray-400" aria-hidden="true" />
                     </div>
-                </Combobox.Button>
+                </HeadlessCombobox.Button>
     
                 {filteredOptions.length > 0 && (
-                    <Combobox.Options className="absolute z-10 mt-1 max-h-56 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm">
+                    <HeadlessCombobox.Options className="absolute z-10 mt-1 max-h-56 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm">
                     {filteredOptions.map((option) => (
-                        <Combobox.Option
+                        <HeadlessCombobox.Option
                         key={valueType === "string" ? (option.value as string) : option.label}
                         value={option.value}
                         className={({ active }) =>
@@ -181,14 +184,14 @@ const Select = <T, Nullable extends boolean = false>(
                                 )}
                                 </>
                             )}
-                        </Combobox.Option>
+                        </HeadlessCombobox.Option>
                     ))}
-                    </Combobox.Options>
+                    </HeadlessCombobox.Options>
                 )}
             </div>
-        </Combobox>
+        </HeadlessCombobox>
     )
 }
 
 
-export default Select
+export default Combobox

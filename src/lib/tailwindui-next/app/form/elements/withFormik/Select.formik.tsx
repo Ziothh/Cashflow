@@ -1,6 +1,6 @@
 import { useField } from "formik"
 import { ReactNode } from "react"
-import { ISelectWithLabelProps, SelectWithLabel } from "../withLabel"
+import { ISelectWithLabelProps, ComboboxWithLabel } from "../withLabel"
 
 type Props<T, Nullable extends boolean> = Omit<ISelectWithLabelProps<T, Nullable>, "value" | "onChange"> & {
     name: string,
@@ -15,7 +15,7 @@ const FormikSelect = <T, Nullable extends boolean>({
 
     return (
         // @ts-ignore
-        <SelectWithLabel 
+        <ComboboxWithLabel 
         value={field.value}
         onChange={v => {
             helpers.setValue(v as any)

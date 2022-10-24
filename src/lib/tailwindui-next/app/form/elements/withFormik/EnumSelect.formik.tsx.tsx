@@ -1,5 +1,5 @@
 import { useField } from "formik"
-import { ISelectWithLabelProps, SelectWithLabel } from "../withLabel"
+import { ISelectWithLabelProps, ComboboxWithLabel } from "../withLabel"
 
 type Props<EnumType, Nullable extends boolean> = Omit<ISelectWithLabelProps<keyof EnumType, Nullable>, "value" | "onChange" | "options"> & {
     name: string,
@@ -18,7 +18,7 @@ const FormikEnumSelect = <EnumType extends Object, Nullable extends boolean>({
 
     return (
         // @ts-ignore
-        <SelectWithLabel 
+        <ComboboxWithLabel 
         // @ts-ignore
         value={field.value}
         options={Object.keys(enumType)}

@@ -4,5 +4,5 @@ export {default as InputWithLabel} from "./Input.withLabel";
 export * from "./Textarea.withLabel";
 export {default as TextareaWithLabel} from "./Textarea.withLabel";
 
-export * from "./Select.withLabel"
-export {default as SelectWithLabel} from "./Select.withLabel"
+export * from "./Combobox.withLabel"
+export {default as ComboboxWithLabel} from "./Combobox.withLabel"
