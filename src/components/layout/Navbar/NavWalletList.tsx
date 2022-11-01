@@ -23,17 +23,20 @@ const NavWalletList: React.FC<Props> = ({}) => {
             {data && (
             <ul>
                 {data.map(w => (
-                    <Link key={w.id} href={`/wallets/${w.id}`}>
-                        <a className="group flex items-center rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-gray-700 hover:text-white">
-                            <WalletColorDot wallet={w}/> 
-                            <span className="ml-4 truncate">{w.name}</span>
-                        </a>
-                    </Link>
+                    (<Link
+                        key={w.id}
+                        href={`/wallets/${w.id}`}
+                        className="group flex items-center rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-gray-700 hover:text-white">
+
+                        <WalletColorDot wallet={w}/>
+                        <span className="ml-4 truncate">{w.name}</span>
+
+                    </Link>)
                 ))}
             </ul>
             )}
         </div>
-    )
+    );
 }
 
 

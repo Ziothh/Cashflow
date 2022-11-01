@@ -320,8 +320,8 @@ const Page: React.FC<Props> = ({}) => {
                                 />
                             </div>
                             <div className="min-w-0 flex-1">
-                                <Link href={AppRoutes.RECIPIENTS(value.id)}>
-                                <a className="focus:outline-none">
+                                <Link href={AppRoutes.RECIPIENTS(value.id)} className="focus:outline-none">
+
                                     {/* Extend touch target to entire panel */}
                                     <span
                                         className="absolute inset-0"
@@ -333,7 +333,7 @@ const Page: React.FC<Props> = ({}) => {
                                     <p className="truncate text-sm text-gray-500">
                                         {value.iban}
                                     </p>
-                                </a>
+
                                 </Link>
                             </div>
                         </div>
@@ -349,7 +349,7 @@ const Page: React.FC<Props> = ({}) => {
                 </div>
             </div>
         </div>
-    )
+    );
 }
 
 export default Page

@@ -33,10 +33,14 @@ const Breadcrumbs: React.FC<IBreadcrumbsProps> = ({
                         <li key={b.name}>
                             <div className="flex items-center">
                                 {i !== 0 && <ChevronRightIcon className="h-5 w-5 mr-4 flex-shrink-0 text-gray-500" aria-hidden="true" />}
-                                <Link href={b.href} as={b.href} prefetch={false}>
-                                    <a className="text-sm font-medium text-gray-400 capitalize hover:text-gray-200">
-                                        {b.name}
-                                    </a>
+                                <Link
+                                    href={b.href}
+                                    as={b.href}
+                                    prefetch={false}
+                                    className="text-sm font-medium text-gray-400 capitalize hover:text-gray-200">
+
+                                    {b.name}
+
                                 </Link>
                             </div>
                         </li>
@@ -44,7 +48,7 @@ const Breadcrumbs: React.FC<IBreadcrumbsProps> = ({
                 </ol>
             </nav>
         </div>
-    )
+    );
 }
 
 interface Props {

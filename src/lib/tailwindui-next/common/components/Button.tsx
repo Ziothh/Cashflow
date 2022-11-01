@@ -69,7 +69,7 @@ const Button: React.FC<PropsWithChildren<Props>> = ({
 
     const Tag = href ? "a" : "button"
     const ButtonWrapper = href 
-    ? ({children}: PropsWithChildren) => <Link href={href}>{children}</Link>
+    ? ({children}: PropsWithChildren) => <Link href={href} legacyBehavior>{children}</Link>
     : Fragment
 
     return (

@@ -47,26 +47,27 @@ const NavButton: FC<INavButtonProps> = ({
     const current = false
 
     return (
-       <Link href={href} as={as}>
-            <a
+        (<Link
+            href={href}
+            as={as}
             className={classNames(
                 current
                 ? 'bg-gray-900 text-white'
                 : 'text-gray-300 hover:bg-gray-700 hover:text-white',
                 'group flex items-center py-2 px-2 text-base font-medium rounded-md'
-            )}
-            >
-                {Icon && <Icon
-                    className={classNames(
-                    current ? 'text-gray-300' : 'text-gray-400 group-hover:text-gray-300',
-                    'mr-4 flex-shrink-0 h-6 w-6'
-                    )}
-                    aria-hidden="true"
-                />}
-                {name}
-            </a>
-       </Link>
-    )
+            )}>
+
+            {Icon && <Icon
+                className={classNames(
+                current ? 'text-gray-300' : 'text-gray-400 group-hover:text-gray-300',
+                'mr-4 flex-shrink-0 h-6 w-6'
+                )}
+                aria-hidden="true"
+            />}
+            {name}
+
+        </Link>)
+    );
 }
 
 const NavEl: FC<INavElProps> = ({
