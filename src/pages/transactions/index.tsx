@@ -2,6 +2,8 @@ import Button from "@ziothh/tailwindui-next/common/components/Button"
 import DefaultPageLayout from "../../components/layout/page/DefaultPageLayout"
 import { AppRoutes } from "../../config/routes"
 import TransactionsTable from "../../features/transactions/TransactionsTable"
+import { useToastifyMutation } from "../../utils/toastify"
+import { useMutation, useTrpcContext } from "../../utils/trpc"
 
 /* This example requires Tailwind CSS v2.0+ */
 const people = [
@@ -22,12 +24,23 @@ interface Props {
 }
 
 
+
 const Page: React.FC<Props> = ({}) => {
+    const {mutateAsync} = useMutation("transaction.sync.bank")
+    const trpcCtx = useTrpcContext()
+
     return (
         <DefaultPageLayout
         title="Transactions"
         headerText="A list of all the transactions in your account."
         buttons={<>
+        <Button size="md" theme="neutral" onClick={async () => {
+            await mutateAsync()
+            trpcCtx.invalidateQueries("transaction.getAll")
+            trpcCtx.refetchQueries(["transaction.getAll"])
+        }}>
+            Sync with bank
+        </Button>
         <Button size="md" href={AppRoutes.TRANSACTIONS("new")} >
             Add transaction
         </Button>

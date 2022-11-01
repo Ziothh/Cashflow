@@ -5,8 +5,9 @@ interface Props<Readonly extends boolean,> {
     title: ReactNode
     description?: ReactNode
     readonly?: Readonly
-    enableReinitialize?: boolean 
+    enableReinitialize?: boolean
 
+    buttons?: ReactNode | (() => ReactNode) | FC<{}> 
 }
 
 
@@ -17,6 +18,7 @@ const FormGroup = <Readonly extends boolean = false, Values extends FormikValues
     // @ts-ignore
     readonly = false,
     enableReinitialize = false,
+    buttons,
     ...formikProps
 }: PropsWithChildren<Props<Readonly>> & (Readonly extends false ? (Omit<FormikConfig<Values>, "children"> & {enableReinitialize?: boolean}) : {initialValues: Values})): JSX.Element => {
     const Wrapper: FC<PropsWithChildren> = readonly === false 
@@ -44,14 +46,21 @@ const FormGroup = <Readonly extends boolean = false, Values extends FormikValues
                         <div className={`space-y-6 bg-white px-4 py-5 sm:p-6 ${readonly ? "rounded-md" : "rounded-t-md"}`}>
                             {children}
                         </div>
-                        {readonly !== true && (
-                            <div className="bg-gray-50 px-4 py-3 text-right rounded-b-md sm:px-6">
-                                <button
+                        {(readonly !== true || buttons) && (
+                            <div className="bg-gray-50 px-4 py-3 text-right rounded-b-md sm:px-6 gap-2 flex justify-end">
+                                {buttons && (
+                                    typeof buttons === "function"
+                                    ? buttons({})
+                                    : buttons
+                                )}
+                                {readonly !== true && (
+                                    <button
                                     type="submit"
                                     className="inline-flex justify-center rounded-md border border-transparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
-                                >
-                                    Save
-                                </button>
+                                    >
+                                        Save
+                                    </button>
+                                )}
                             </div>
                         )}
                     </div>

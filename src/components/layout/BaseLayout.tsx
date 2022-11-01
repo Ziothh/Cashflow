@@ -9,6 +9,7 @@ import Navbar from "./Navbar"
 import { BanknotesIcon, CakeIcon, ClockIcon, CogIcon, CreditCardIcon, DocumentChartBarIcon, HomeIcon, QuestionMarkCircleIcon, ScaleIcon, ShieldCheckIcon, UserGroupIcon, WalletIcon, XMarkIcon } from "@heroicons/react/24/outline"
 import NavButton from "./Navbar/NavButton"
 import NavWalletList from "./Navbar/NavWalletList"
+import { ToastContainer } from "react-toastify"
 
 const navigation: ComponentPropsFrom<typeof SidebarNav>["links"][number] = [
     { name: 'Home', href: AppRoutes.DASHBOARD, icon: HomeIcon, },
@@ -71,8 +72,13 @@ const BaseLayout: React.FC<PropsWithChildren<Props>> = ({children}) => {
                 {children}
                 </main>
             </div>
+            <ToastContainer
+            theme="dark"
+            position="bottom-right"
+            hideProgressBar={false}
+            autoClose={2000}
+            /> 
         </SidebarLayout>
-        
     )
 }
 

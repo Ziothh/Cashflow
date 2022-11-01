@@ -14,6 +14,15 @@ import wishlistItemRouter from "./routers/wishlistItem.router";
 
 export const appRouter = createRouter()
     .transformer(superjson)
+    .middleware(async ({ctx, next, path, rawInput, type, meta,}) => {
+        await new Promise((res) => {
+            setTimeout(() => {
+                res("hi")
+            }, 2000)
+        })
+        
+        return next()
+    })
     .merge("transaction.", transactionRouter)
     .merge("wallet.", walletRouter)
     .merge("wishlist.", wishlistRouter)

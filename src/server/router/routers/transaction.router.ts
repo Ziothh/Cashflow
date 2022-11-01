@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { transactionUpdateValidator } from "../../../shared/validators";
 import { prisma } from "../../db/client";
 import { createProtectedRouter, createRouter } from "../context";
 
@@ -135,6 +136,29 @@ const transactionRouter = createProtectedRouter()
             /** `(thisMonth / previousMonth) * 100`% */
             deltaPercentage: ((filtered.thisMonth / filtered.previousMonth) * 100)
         }
+    }
+})
+.mutation("update", {
+    input: transactionUpdateValidator(),
+    async resolve({ctx, input, type}) {
+        const {id, ...rest} = input
+        return prisma.transaction.update({
+            where: {id},
+            data: {
+                ...rest,
+            }
+        })
+    }
+})
+.mutation("sync.bank", {
+    async resolve() {
+        await new Promise((res) => {
+            setTimeout(() => {
+                res("hi")
+            }, 2000)
+        })
+
+        return false
     }
 })
 

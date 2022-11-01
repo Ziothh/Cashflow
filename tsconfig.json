@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "target": "es5",
+    "target": "ES6",
     "lib": ["dom", "dom.iterable", "esnext"],
     "allowJs": true,
     "skipLibCheck": true,
@@ -16,7 +16,8 @@
     "incremental": true,
     "noUncheckedIndexedAccess": true,
     "paths": {
-        "@ziothh/tailwindui-next/*": ["./src/lib/tailwindui-next/*"]
+        "@ziothh/tailwindui-next/*": ["./src/lib/tailwindui-next/*"],
+        "@node_modules/*": ["./node_modules/*"]
     }
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "**/*.cjs", "**/*.mjs"],

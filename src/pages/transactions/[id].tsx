@@ -18,6 +18,11 @@ import TransactionTypeSelect from "../../components/form/presets/TransactionType
 import TransactionStatusSelect from "../../components/form/presets/TransactionStatusSelect"
 import WalletSelect from "../../components/form/presets/WalletSelect"
 import RecipientSelect from "../../components/form/presets/RecipientSelect"
+import { useToastifyMutation } from "../../utils/toastify"
+import { useEffect } from "react"
+import Link from "next/link"
+import { AppRoutes } from "../../config/routes"
+import Button from "@ziothh/tailwindui-next/common/components/Button"
 
 const schema = toFormikValidationSchema(transactionUpdateValidator())
 
@@ -29,6 +34,14 @@ interface Props {
 const Page: React.FC<Props> = ({}) => {
     const router = useRouter()
 
+    const {mutateAsync: update} = useToastifyMutation("transaction.update", {
+        pending: "Saving...",
+        error(error, variables) {
+            return `Changes couldn't be saved.\nError: ${error.message}`
+        },
+        success: "Changed have been saved",
+    })
+
     const {data: transaction} = useQuery(["transaction.getOne.full", {
         id: router.query.id as string,
     }], {
@@ -39,6 +52,7 @@ const Page: React.FC<Props> = ({}) => {
     })
 
     if (!transaction) return null
+
 
     return (
         <DefaultPageLayout
@@ -52,7 +66,7 @@ const Page: React.FC<Props> = ({}) => {
                 initialValues={transaction!}
                 validationSchema={schema}
                 onSubmit={(values, helpers,) => {
-                    console.debug(values);
+                    update(values)
                 }}
                 >
                     <FormikInput
@@ -103,8 +117,10 @@ const Page: React.FC<Props> = ({}) => {
                 <FormGroup title="Recipient"
                 initialValues={transaction!}
                 validationSchema={schema}
+                enableReinitialize={false}
+                buttons={<Button theme="neutral" href={AppRoutes.RECIPIENTS()}><a>View recipients</a></Button>}
                 onSubmit={(values, helpers,) => {
-                    console.debug(values);
+                    update(values)
                 }}
                 >
                     <RecipientSelect/>

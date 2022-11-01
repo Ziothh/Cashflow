@@ -117,7 +117,7 @@ model VerificationToken {
 
 model Recipient {
     id    String  @id @default(cuid())
-    name  String?
+    name  String
     iban  String?
     role  String?
     image String?
