@@ -1,9 +1,13 @@
+import classNames from "classnames"
 import { PropsWithChildren, ReactNode } from "react"
 
 interface Props {
     title: ReactNode
     headerText?: ReactNode
     buttons?: ReactNode
+    /** @default false */
+    scroll?: boolean
+    className?: string
 }
 
 
@@ -12,9 +16,12 @@ const DefaultPageLayout: React.FC<PropsWithChildren<Props>> = ({
     buttons,
     title,
     headerText,
+    scroll = false,
+    className,
 }) => {
     return (
-        <div className="px-4 sm:px-6 lg:px-8 py-10 max-w-full overflow-x-hidden overflow-y-auto">
+        <div className={classNames("px-4 sm:px-6 lg:px-8 py-10 max-w-full", scroll && "overflow-x-hidden overflow-y-auto", className)}>
+        {/* // <div className="px-4 sm:px-6 lg:px-8 py-10 max-w-full"> */}
             <div className="sm:flex sm:items-center">
                 <div className="sm:flex-auto">
                     <h1 className="text-xl font-semibold text-gray-900">{title}</h1>

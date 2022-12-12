@@ -64,13 +64,12 @@ const BaseLayout: React.FC<PropsWithChildren<Props>> = ({children}) => {
             
             
             {/* Content */}
-            <div className="flex flex-1 flex-col">
+            <div className="flex flex-1 flex-col max-h-screen overflow-x-hidden overflow-y-auto">
                 <Header/>
 
-                <main className="flex-1 pb-8">
-                
-                {children}
-                </main>
+                {/* <main className="flex-1"> */}
+                    {children}
+                {/* </main> */}
             </div>
             <ToastContainer
             theme="dark"

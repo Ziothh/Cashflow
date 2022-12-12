@@ -23,7 +23,9 @@ import {
     MapIcon,
     MegaphoneIcon,
     SquaresPlusIcon,
+    UserCircleIcon,
     UserGroupIcon,
+    UserIcon,
     XMarkIcon,
 } from "@heroicons/react/24/outline"
 import {
@@ -38,6 +40,7 @@ import { inferQueryOutput, useQuery } from "../../utils/trpc"
 import SearchList from "@ziothh/tailwindui-next/app/search/SearchList"
 import Link from "next/link"
 import { AppRoutes } from "../../config/routes"
+import SearchListLayout from "../../components/layout/SearchListLayout"
 
 const user = {
     name: "Tom Cook",
@@ -149,6 +152,65 @@ const Page: React.FC<Props> = ({}) => {
     )}, [data])[0] 
 
     return (
+        <SearchListLayout
+        searchList={{
+            title: "Recipients",
+            description: `Search directory of ${data?.length} recipients`,
+            values: data!,
+            groups: [..."abcdefghijklmnopqrstuvw".toUpperCase()],
+            getGroupIndex: (r, groups) => groups.findIndex(g => g === r.name[0]!.toUpperCase()),
+            getGroupLabel: ((g) => g),
+            render: ({value}) => (
+                <div className="relative flex items-center space-x-3 px-6 py-5 focus-within:ring-2 focus-within:ring-inset focus-within:ring-pink-500 hover:bg-gray-50">
+                    <div className="flex-shrink-0 h-10 w-10 rounded-full overflow-hidden">
+                        {
+                            value.image
+                            ? (
+                                <img
+                                src={value.image!}
+                                alt=""
+                                />
+                            ) : (
+                                <div
+                                className="p-3 bg-gray-200"
+                                >
+                                    <UserIcon
+                                    // className="h-10"
+                                    />
+                                </div>
+                            )
+                        } 
+                    </div>
+                    <div className="min-w-0 flex-1">
+                        <Link href={AppRoutes.RECIPIENTS(value.id)} className="focus:outline-none">
+
+                            {/* Extend touch target to entire panel */}
+                            <span
+                                className="absolute inset-0"
+                                aria-hidden="true"
+                            />
+                            <p className="text-sm font-medium text-gray-900">
+                                {value.name}
+                            </p>
+                            <p className="truncate text-sm text-gray-500">
+                                {value.iban}
+                            </p>
+
+                        </Link>
+                    </div>
+                </div>
+            ),
+            sort: (a, b) => a.name.localeCompare(b.name)}
+            search={{
+                placeholder: "Search",
+                filter(query, value, group) {
+                    return value.name.toLowerCase().includes(query.lower)
+                },
+            }}
+        }}
+        >
+
+        </SearchListLayout>
         <div className="flex h-full bg-white">
             <div className="flex min-w-0 flex-1 flex-col overflow-hidden">
                 <div className="relative z-0 flex flex-1 overflow-hidden">
@@ -304,47 +366,7 @@ const Page: React.FC<Props> = ({}) => {
                         </article>
                     </main>
                     <SearchList
-                    title="Recipients"
-                    description={`Search directory of ${data?.length} recipients`}
-                    values={data!}
-                    groups={[..."abcdefghijklmnopqrstuvw".toUpperCase()]}
-                    getGroupIndex={(r, groups) => groups.findIndex(g => g === r.name[0]!.toUpperCase())}          
-                    getGroupLabel={(g) => g}
-                    render={({value}) => (
-                        <div className="relative flex items-center space-x-3 px-6 py-5 focus-within:ring-2 focus-within:ring-inset focus-within:ring-pink-500 hover:bg-gray-50">
-                            <div className="flex-shrink-0">
-                                <img
-                                    className="h-10 w-10 rounded-full"
-                                    src={value.image!}
-                                    alt=""
-                                />
-                            </div>
-                            <div className="min-w-0 flex-1">
-                                <Link href={AppRoutes.RECIPIENTS(value.id)} className="focus:outline-none">
 
-                                    {/* Extend touch target to entire panel */}
-                                    <span
-                                        className="absolute inset-0"
-                                        aria-hidden="true"
-                                    />
-                                    <p className="text-sm font-medium text-gray-900">
-                                        {value.name}
-                                    </p>
-                                    <p className="truncate text-sm text-gray-500">
-                                        {value.iban}
-                                    </p>
-
-                                </Link>
-                            </div>
-                        </div>
-                    )}
-                    sort={(a, b) => a.name.localeCompare(b.name)}
-                    search={{
-                        placeholder: "Search",
-                        filter(query, value, group) {
-                            return value.name.toLowerCase().includes(query.lower)
-                        },
-                    }}
                     />
                 </div>
             </div>

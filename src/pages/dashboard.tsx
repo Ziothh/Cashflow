@@ -68,7 +68,7 @@ const Page: React.FC<Props> = ({}) => {
     }, [userOnDB, spentReport])
 
     return (
-        <>
+        <div className="pb-8">
             {/* Page header */}
             <div className="bg-white shadow">
                 <div className="px-4 sm:px-6 lg:mx-auto lg:px-8">
@@ -160,7 +160,7 @@ const Page: React.FC<Props> = ({}) => {
                     </div>
                 </Section>
             </div>
-        </>
+        </div>
     )
 }
 
